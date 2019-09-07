@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class Owner implements Serializable, Comparator<Owner>{
+public class Owner implements Serializable, Comparable<Owner>, Comparator<Owner>{
 	
 	private String id;
 	private String names;
@@ -76,22 +76,8 @@ public class Owner implements Serializable, Comparator<Owner>{
 		return o1.getPets().size()-o2.getPets().size();
 	}
 	
-	public void addPets(Pet e) throws PetName{
-		boolean equal = false;
-		for (int i = 0; i < pets.size() && !equal; i++) {
-			if(pets.get(i).getName().equals(e.getName())) {
-				equal = true;
-			}
-		}
-		if(!equal) {
-			pets.add(e);
-		}
-		else {
-			throw new PetName();
-		}
-	}
-	
-	public int compareById(Owner e) {
+	@Override
+	public int compareTo(Owner e) {
 		return id.compareTo(e.getId());
 	}
 	
@@ -109,5 +95,85 @@ public class Owner implements Serializable, Comparator<Owner>{
 	
 	public int compareByPetsType(Owner e) {
 		return petsType.compareTo(e.getPetsType());
+	}
+	
+	public void addPets(Pet e) throws PetName{
+		boolean equal = false;
+		for (int i = 0; i < pets.size() && !equal; i++) {
+			if(pets.get(i).compareTo(e) == 0) {
+				equal = true;
+			}
+		}
+		if(!equal) {
+			pets.add(e);
+		}
+		else {
+			throw new PetName();
+		}
+	}
+	
+	//By bubble
+	public void orderPetsById() {
+		for(int i = 0; i < pets.size()-1; i++) {
+			for(int j = 0; j < pets.size()-i-1; j++) {
+				if(pets.get(j).compareTo(pets.get(j+1)) > 0) {
+					Pet aux = pets.get(j);
+					pets.set(j, pets.get(j+1));
+					pets.set(j+1, aux);
+				}
+			}
+		}
+	}
+	
+	//By bubble
+	public void orderPetsByName() {
+		for(int i = 0; i < pets.size()-1; i++) {
+			for(int j = 0; j < pets.size()-i-1; j++) {
+				if(pets.get(j).compare(pets.get(j), pets.get(j+1)) > 0) {
+					Pet aux = pets.get(j);
+					pets.set(j, pets.get(j+1));
+					pets.set(j+1, aux);
+				}
+			}
+		}
+	}
+	
+	//By bubble
+	public void orderPetsByBirthDate() {
+		for(int i = 0; i < pets.size()-1; i++) {
+			for(int j = 0; j < pets.size()-i-1; j++) {
+				if(pets.get(j).compareByBirthDate(pets.get(j+1)) > 0) {
+					Pet aux = pets.get(j);
+					pets.set(j, pets.get(j+1));
+					pets.set(j+1, aux);
+				}
+			}
+		}
+	}
+	
+	//By bubble
+	public void orderPetsByGender() {
+		for(int i = 0; i < pets.size()-1; i++) {
+			for(int j = 0; j < pets.size()-i-1; j++) {
+				if(pets.get(j).compareByGender(pets.get(j+1)) > 0) {
+					Pet aux = pets.get(j);
+					pets.set(j, pets.get(j+1));
+					pets.set(j+1, aux);
+				}
+			}
+		}
+	}
+	
+	//By bubble
+	public void orderPetsByType() {
+		for(int i = 0; i < pets.size()-1; i++) {
+			for(int j = 0; j < pets.size()-i-1; j++) {
+				if(pets.get(j).compareByType(pets.get(j+1)) > 0) {
+					Pet aux = pets.get(j);
+					pets.set(j, pets.get(j+1));
+					pets.set(j+1, aux);
+				}
+			}
+		}
 	}
 }

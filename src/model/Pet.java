@@ -2,7 +2,7 @@ package model;
 import java.io.Serializable;
 import java.util.Comparator;
 
-public class Pet implements Serializable{
+public class Pet implements Comparable<Pet>, Comparator<Pet>{
 	
 	public static final int MALE = 1;
 	public static final int FEMALE = 2;
@@ -62,12 +62,14 @@ public class Pet implements Serializable{
 		this.type = type;
 	}
 	
-	public int compareById(Pet e) {
+	@Override
+	public int compareTo(Pet e) {
 		return id.compareTo(e.getId());
 	}
 	
-	public int compareByName(Pet e) {
-		return name.compareTo(e.getName());
+	@Override
+	public int compare(Pet e, Pet e2) {
+		return e.getName().compareTo(e2.getName());
 	}
 	
 	public int compareByBirthDate(Pet e) {

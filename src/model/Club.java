@@ -1,8 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
-public class Club implements Comparable<Club>{
+public class Club implements Comparable<Club>, Comparator<Club>{
 	
 	private String id;
 	private String name;
@@ -63,23 +64,9 @@ public class Club implements Comparable<Club>{
 		return owners.size()-o.getOwners().size();
 	}
 	
-	public void addOwner(Owner e) throws SameId{
-		boolean equal = false;
-		for (int i = 0; i < owners.size() && !equal; i++) {
-			if(owners.get(i).getId().equals(e.getId())) {
-				equal = true;
-			}
-		}
-		if(!equal) {
-			owners.add(e);
-		}
-		else {
-			throw new SameId();
-		}
-	}
-	
-	public int compareById(Club e) {
-		return id.compareTo(e.getId());
+	@Override
+	public int compare(Club o1, Club o2) {
+		return o1.getId().compareTo(o2.getId());
 	}
 	
 	public int compareByName(Club e) {
@@ -92,5 +79,98 @@ public class Club implements Comparable<Club>{
 	
 	public int compareByPetsType(Club e) {
 		return petsType.compareTo(e.getPetsType());
+	}
+	
+
+	public boolean sameOwner(Owner e){
+		boolean equal = false;
+		for (int i = 0; i < owners.size() && !equal; i++) {
+			if(owners.get(i).compareTo(e)==0) {
+				equal = true;
+			}
+		}
+		return equal;
+	}
+	
+	public void addOwner(Owner e) {
+		owners.add(e);
+	}
+	
+	//By insertion
+	public void orderOwnersByPetsNumber() {
+		for(int i = 1; i < owners.size(); i++) {
+			for(int j = i; j >0; j--) {
+				if(owners.get(j-1).compare(owners.get(j-1), owners.get(j)) > 0) {
+					Owner aux = owners.get(j);
+					owners.set(j, owners.get(j+1));
+					owners.set(j+1, aux);
+				}
+			}
+		}
+	}
+	
+	//By insertion
+	public void orderOwnersById() {
+		for(int i = 1; i < owners.size(); i++) {
+			for(int j = i; j >0; j--) {
+				if(owners.get(j-1).compareTo(owners.get(j)) > 0) {
+					Owner aux = owners.get(j);
+					owners.set(j, owners.get(j+1));
+					owners.set(j+1, aux);
+				}
+			}
+		}
+	}
+	
+	//By insertion
+	public void orderOwnersByNames() {
+		for(int i = 1; i < owners.size(); i++) {
+			for(int j = i; j >0; j--) {
+				if(owners.get(j-1).compareByNames(owners.get(j)) > 0) {
+					Owner aux = owners.get(j);
+					owners.set(j, owners.get(j+1));
+					owners.set(j+1, aux);
+				}
+			}
+		}
+	}
+	
+	//By insertion
+	public void orderOwnersByLastNames() {
+		for(int i = 1; i < owners.size(); i++) {
+			for(int j = i; j >0; j--) {
+				if(owners.get(j-1).compareByLastNames(owners.get(j)) > 0) {
+					Owner aux = owners.get(j);
+					owners.set(j, owners.get(j+1));
+					owners.set(j+1, aux);
+				}
+			}
+		}
+	}
+	
+	//By insertion
+	public void orderOwnersByBirthDate() {
+		for(int i = 1; i < owners.size(); i++) {
+			for(int j = i; j >0; j--) {
+				if(owners.get(j-1).compareByBirthDate(owners.get(j)) > 0) {
+					Owner aux = owners.get(j);
+					owners.set(j, owners.get(j+1));
+					owners.set(j+1, aux);
+				}
+			}
+		}
+	}
+	
+	//By insertion
+	public void orderOwnersByPetsType() {
+		for(int i = 1; i < owners.size(); i++) {
+			for(int j = i; j >0; j--) {
+				if(owners.get(j-1).compareByPetsType(owners.get(j)) > 0) {
+					Owner aux = owners.get(j);
+					owners.set(j, owners.get(j+1));
+					owners.set(j+1, aux);
+				}
+			}
+		}
 	}
 }
