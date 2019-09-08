@@ -14,7 +14,6 @@ public class Pet implements Comparable<Pet>, Comparator<Pet>{
 	private String type;
 	
 	public Pet(String id, String name, String birthDate, int gender, String type) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.birthDate = birthDate;

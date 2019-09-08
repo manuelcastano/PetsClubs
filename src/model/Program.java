@@ -1,21 +1,16 @@
 package model;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Program {
 	
-	public static final String ARCHIVE_SERIALIZABLE = "\"C:\\Users\\mafes\\Documents\\LaboratoriosAPO\\PetsClubs\\OwnersAndPets.txt\"";
-	public static final String ARCHIVE_PLANE = "\"C:\\Users\\mafes\\Documents\\LaboratoriosAPO\\PetsClubs\\Clubs.txt\"";
+	public static final String ARCHIVE_PLANE = "\"C:\\Users\\mafes\\Documents\\LaboratoriosAPO\\PetsClubs\\Clubs.csv\"";
 	
-	private File archiveSerializable;
-	private File archivePlane;
 	private ArrayList<Club> clubs;
 
 	public Program() {
 		clubs = new ArrayList<Club>();
-		archiveSerializable = new File(ARCHIVE_SERIALIZABLE);
-		archivePlane = new File(ARCHIVE_PLANE);
 	}
 
 	public ArrayList<Club> getClubs() {
@@ -26,8 +21,12 @@ public class Program {
 		this.clubs = clubs;
 	}
 	
-	public void addClub(Club e) {
+	public void addClub(Club e) throws FileNotFoundException {
 		clubs.add(e);
+		File f = new File(ARCHIVE_PLANE);
+		PrintWriter p = new PrintWriter(f);
+		p.println(e);
+		p.close();
 	}
 	
 	public void addOwner(Owner e, String idClub) throws SameId{
@@ -136,18 +135,440 @@ public class Program {
 		}
 	}
 	
-	public Club findSequential(String id) throws NoExist{
+	public String findSequentialClubById(String id){
 		boolean finded = false;
-		Club e = null;
+		String msg = "The club doesn't exist";
 		for(int i = 0; i < clubs.size() && !finded; i++) {
 			if(clubs.get(i).getId().equals(id)) {
 				finded = true;
-				e = clubs.get(i);
+				msg = "The club exist";
 			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryClubById(String id){
+		String msg = "The club doesn't exist";
+		boolean finded = false;
+		int start = 0;
+		int end = clubs.size()-1;
+		while(start <= end && !finded) {
+			int middle = (start + end)/2;
+			if(clubs.get(middle).getId().equals(id)) {
+				msg = "The club exist";
+				finded = true;
+			}
+			else if(clubs.get(middle).getId().compareTo(id) > 0) {
+				end = middle - 1;
+			}
+			else {
+				start = middle +1;
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialClubByName(String name){
+		boolean finded = false;
+		String msg = "The club doesn't exist";
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).getName().equals(name)) {
+				finded = true;
+				msg = "The club exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryClubByName(String name){
+		String msg = "The club doesn't exist";
+		boolean finded = false;
+		int start = 0;
+		int end = clubs.size()-1;
+		while(start <= end && !finded) {
+			int middle = (start + end)/2;
+			if(clubs.get(middle).getName().equals(name)) {
+				msg = "The club exist";
+				finded = true;
+			}
+			else if(clubs.get(middle).getName().compareTo(name) > 0) {
+				end = middle - 1;
+			}
+			else {
+				start = middle +1;
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialClubByCreationDate(String creationDate){
+		boolean finded = false;
+		String msg = "The club doesn't exist";
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).getCreationDate().equals(creationDate)) {
+				finded = true;
+				msg = "The club exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryClubByCreationDate(String creationDate){
+		String msg = "The club doesn't exist";
+		boolean finded = false;
+		int start = 0;
+		int end = clubs.size()-1;
+		while(start <= end && !finded) {
+			int middle = (start + end)/2;
+			if(clubs.get(middle).getCreationDate().equals(creationDate)) {
+				msg = "The club exist";
+				finded = true;
+			}
+			else if(clubs.get(middle).getCreationDate().compareTo(creationDate) > 0) {
+				end = middle - 1;
+			}
+			else {
+				start = middle +1;
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialClubByPetsType(String petsType){
+		boolean finded = false;
+		String msg = "The club doesn't exist";
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).getPetsType().equals(petsType)) {
+				finded = true;
+				msg = "The club exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryClubByPetsType(String petsType){
+		String msg = "The club doesn't exist";
+		boolean finded = false;
+		int start = 0;
+		int end = clubs.size()-1;
+		while(start <= end && !finded) {
+			int middle = (start + end)/2;
+			if(clubs.get(middle).getPetsType().equals(petsType)) {
+				msg = "The club exist";
+				finded = true;
+			}
+			else if(clubs.get(middle).getPetsType().compareTo(petsType) > 0) {
+				end = middle - 1;
+			}
+			else {
+				start = middle +1;
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialOwnerById(String id) {
+		String msg = "The owner doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findSequentialOwnerById(id).equals("The owner exist")) {
+				finded = true;
+				msg = "The owner exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryOwnerById(String id) {
+		String msg = "The owner doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findBinaryOwnerById(id).equals("The owner exist")) {
+				finded = true;
+				msg = "The owner exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialOwnerByNames(String names) {
+		String msg = "The owner doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findSequentialOwnerByNames(names).equals("The owner exist")) {
+				finded = true;
+				msg = "The owner exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryOwnerByNames(String names) {
+		String msg = "The owner doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findBinaryOwnerByNames(names).equals("The owner exist")) {
+				finded = true;
+				msg = "The owner exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialOwnerByLastNames(String lastNames) {
+		String msg = "The owner doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findSequentialOwnerByLastNames(lastNames).equals("The owner exist")) {
+				finded = true;
+				msg = "The owner exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryOwnerByLastNames(String lastNames) {
+		String msg = "The owner doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findBinaryOwnerByLastNames(lastNames).equals("The owner exist")) {
+				finded = true;
+				msg = "The owner exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialOwnerByBirthDate(String birthDate) {
+		String msg = "The owner doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findSequentialOwnerByBirthDate(birthDate).equals("The owner exist")) {
+				finded = true;
+				msg = "The owner exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryOwnerByBirthDate(String birthDate) {
+		String msg = "The owner doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findBinaryOwnerByBirthDate(birthDate).equals("The owner exist")) {
+				finded = true;
+				msg = "The owner exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialOwnerByPetsType(String petsType) {
+		String msg = "The owner doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findSequentialOwnerByPetsType(petsType).equals("The owner exist")) {
+				finded = true;
+				msg = "The owner exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryOwnerByPetsType(String petsType) {
+		String msg = "The owner doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findBinaryOwnerByPetsType(petsType).equals("The owner exist")) {
+				finded = true;
+				msg = "The owner exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialPetById(String id) {
+		String msg = "The pet doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findSequentialPetById(id).equals("The pet exist")) {
+				finded = true;
+				msg = "The pet exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryPetById(String id) {
+		String msg = "The pet doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findBinaryPetById(id).equals("The pet exist")) {
+				finded = true;
+				msg = "The pet exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialPetByName(String name) {
+		String msg = "The pet doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findSequentialPetByName(name).equals("The pet exist")) {
+				finded = true;
+				msg = "The pet exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryPetByName(String name) {
+		String msg = "The pet doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findBinaryPetByName(name).equals("The pet exist")) {
+				finded = true;
+				msg = "The pet exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialPetByBirthDate(String birthDate) {
+		String msg = "The pet doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findSequentialPetByBirthDate(birthDate).equals("The pet exist")) {
+				finded = true;
+				msg = "The pet exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryPetByBirthDate(String birthDate) {
+		String msg = "The pet doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findBinaryPetByBirthDate(birthDate).equals("The pet exist")) {
+				finded = true;
+				msg = "The pet exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialPetByGender(int gender) {
+		String msg = "The pet doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findSequentialPetByGender(gender).equals("The pet exist")) {
+				finded = true;
+				msg = "The pet exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryPetByGender(int gender) {
+		String msg = "The pet doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findBinaryPetByGender(gender).equals("The pet exist")) {
+				finded = true;
+				msg = "The pet exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialPetByType(String type) {
+		String msg = "The pet doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findSequentialPetByType(type).equals("The pet exist")) {
+				finded = true;
+				msg = "The pet exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryPetByType(String type) {
+		String msg = "The pet doesn't exist";
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).findBinaryPetByType(type).equals("The pet exist")) {
+				finded = true;
+				msg = "The pet exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String addPet(String idOwner, Pet e) throws PetName {
+		boolean finded = false;
+		String msg = "The owner doesn't exist";
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			if(clubs.get(i).ownerExist(idOwner)) {
+				finded = true;
+				clubs.get(i).addPet(e, idOwner);
+				msg = "The pet was added successfuly";
+			}
+		}
+		return msg;
+	}
+	
+	public void eliminatePet(String msg) throws NoExist{
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			finded = clubs.get(i).eliminatePet(msg);
 		}
 		if(!finded) {
 			throw new NoExist();
 		}
-		return e;
+	}
+	
+	public void eliminateOwner(String msg) throws NoExist{
+		boolean finded = false;
+		for(int i = 0; i < clubs.size() && !finded; i++) {
+			finded = clubs.get(i).eliminateOwner(msg);
+		}
+		if(!finded) {
+			throw new NoExist();
+		}
+	}
+	
+	public void eliminateClub(String msg) throws NoExist{
+		boolean eliminated = false;
+		for (int i = 0; i < clubs.size() && !eliminated; i++) {
+			if(clubs.get(i).getName().equals(msg) || clubs.get(i).getId().equals(msg)) {
+				eliminated = true;
+				clubs.remove(i);
+			}
+		}
+		if(!eliminated) {
+			throw new NoExist();
+		}
+	}
+	
+	public void saveData() throws FileNotFoundException, IOException {
+		for(int i = 0; i < clubs.size(); i++) {
+			clubs.get(i).saveData();
+		}
+	}
+	
+	public void loadData() throws IOException, ClassNotFoundException {
+		File f = new File(ARCHIVE_PLANE);
+		BufferedReader bw = new BufferedReader(new FileReader(f));
+		String line;
+        while((line= bw.readLine())!=null) {
+        	if(!line.equals("id,name,CreationDate,petsType")) {
+        		String[] s = line.split(",");
+            	Club e = new Club(s[0], s[1], s[2], s[3]);
+            	clubs.add(e);
+        	}
+        }
 	}
 }

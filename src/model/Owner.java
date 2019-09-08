@@ -14,7 +14,6 @@ public class Owner implements Serializable, Comparable<Owner>, Comparator<Owner>
 	private ArrayList<Pet> pets;
 	
 	public Owner(String id, String names, String lastNames, String birthDate, String petsType) {
-		super();
 		this.id = id;
 		this.names = names;
 		this.lastNames = lastNames;
@@ -175,5 +174,181 @@ public class Owner implements Serializable, Comparable<Owner>, Comparator<Owner>
 				}
 			}
 		}
+	}
+	
+	public String findSequentialPetById(String id){
+		boolean finded = false;
+		String msg = "The owner doesn't exist";
+		for(int i = 0; i < pets.size() && !finded; i++) {
+			if(pets.get(i).getId().equals(id)) {
+				finded = true;
+				msg = "The owner exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryPetById(String id){
+		String msg = "The owner doesn't exist";
+		boolean finded = false;
+		int start = 0;
+		int end = pets.size()-1;
+		while(start <= end && !finded) {
+			int middle = (start + end)/2;
+			if(pets.get(middle).getId().equals(id)) {
+				msg = "The owner exist";
+				finded = true;
+			}
+			else if(pets.get(middle).getId().compareTo(id) > 0) {
+				end = middle - 1;
+			}
+			else {
+				start = middle +1;
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialPetByName(String name){
+		boolean finded = false;
+		String msg = "The owner doesn't exist";
+		for(int i = 0; i < pets.size() && !finded; i++) {
+			if(pets.get(i).getName().equals(name)) {
+				finded = true;
+				msg = "The owner exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryPetByName(String name){
+		String msg = "The owner doesn't exist";
+		boolean finded = false;
+		int start = 0;
+		int end = pets.size()-1;
+		while(start <= end && !finded) {
+			int middle = (start + end)/2;
+			if(pets.get(middle).getName().equals(name)) {
+				msg = "The owner exist";
+				finded = true;
+			}
+			else if(pets.get(middle).getName().compareTo(name) > 0) {
+				end = middle - 1;
+			}
+			else {
+				start = middle +1;
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialPetByBirthDate(String birthDate){
+		boolean finded = false;
+		String msg = "The owner doesn't exist";
+		for(int i = 0; i < pets.size() && !finded; i++) {
+			if(pets.get(i).getBirthDate().equals(birthDate)) {
+				finded = true;
+				msg = "The owner exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryPetByBirthDate(String birthDate){
+		String msg = "The owner doesn't exist";
+		boolean finded = false;
+		int start = 0;
+		int end = pets.size()-1;
+		while(start <= end && !finded) {
+			int middle = (start + end)/2;
+			if(pets.get(middle).getBirthDate().equals(birthDate)) {
+				msg = "The owner exist";
+				finded = true;
+			}
+			else if(pets.get(middle).getBirthDate().compareTo(birthDate) > 0) {
+				end = middle - 1;
+			}
+			else {
+				start = middle +1;
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialPetByGender(int gender){
+		boolean finded = false;
+		String msg = "The owner doesn't exist";
+		for(int i = 0; i < pets.size() && !finded; i++) {
+			if(pets.get(i).getGender() == gender){
+				finded = true;
+				msg = "The owner exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryPetByGender(int gender){
+		String msg = "The owner doesn't exist";
+		boolean finded = false;
+		int start = 0;
+		int end = pets.size()-1;
+		while(start <= end && !finded) {
+			int middle = (start + end)/2;
+			if(pets.get(middle).getGender() == gender) {
+				msg = "The owner exist";
+				finded = true;
+			}
+			else if(pets.get(middle).getGender() - gender > 0) {
+				end = middle - 1;
+			}
+			else {
+				start = middle +1;
+			}
+		}
+		return msg;
+	}
+	
+	public String findSequentialPetByType(String type){
+		boolean finded = false;
+		String msg = "The owner doesn't exist";
+		for(int i = 0; i < pets.size() && !finded; i++) {
+			if(pets.get(i).getType().equals(type)) {
+				finded = true;
+				msg = "The owner exist";
+			}
+		}
+		return msg;
+	}
+	
+	public String findBinaryPetByType(String type){
+		String msg = "The owner doesn't exist";
+		boolean finded = false;
+		int start = 0;
+		int end = pets.size()-1;
+		while(start <= end && !finded) {
+			int middle = (start + end)/2;
+			if(pets.get(middle).getType().equals(type)) {
+				msg = "The owner exist";
+				finded = true;
+			}
+			else if(pets.get(middle).getType().compareTo(type) > 0) {
+				end = middle - 1;
+			}
+			else {
+				start = middle +1;
+			}
+		}
+		return msg;
+	}
+	
+	public boolean eliminatePet(String msg) {
+		boolean eliminated = false;
+		for (int i = 0; i < pets.size() && !eliminated; i++) {
+			if(pets.get(i).getName().equals(msg) || pets.get(i).getId().equals(msg)) {
+				eliminated = true;
+				pets.remove(i);
+			}
+		}
+		return eliminated;
 	}
 }
