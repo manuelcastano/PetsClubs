@@ -24,7 +24,8 @@ public class Main {
 			System.out.println("2. Find");
 			System.out.println("3. Add pet");
 			System.out.println("4. Add owner");
-			System.out.println("5. Eliminate");
+			System.out.println("5. Add Club");
+			System.out.println("6. Eliminate");
 			try {
 				option = reader.nextInt();
 				reader.nextLine();
@@ -45,6 +46,13 @@ public class Main {
 					addOwner();
 					break;
 				case 5:
+					try {
+						addClub();
+					} catch (ClassNotFoundException | IOException e) {
+						System.out.println(e.getMessage());
+					}
+					break;
+				case 6:
 					eliminate();
 					break;
 				default:
@@ -500,7 +508,13 @@ public class Main {
 		System.out.println("Name of the pet");
 		String name = reader.nextLine();
 		System.out.println("Birth date of the pet");
-		String birthDate = reader.nextLine();
+		System.out.println("Year");
+		String year = reader.nextLine();
+		System.out.println("Month (If the month is less than 10, please add a 0 in the front)");
+		String month = reader.nextLine();
+		System.out.println("Day (If the day is less than 10, please add a 0 in the front)");
+		String day = reader.nextLine();
+		String birthDate = year+"/"+month+"/"+day;
 		System.out.println("Gender of the pet");
 		System.out.println("1. Male");
 		System.out.println("2. Female");
@@ -534,7 +548,13 @@ public class Main {
 		System.out.println("Last names of the owner");
 		String lastNames = reader.nextLine();
 		System.out.println("Birth date of the owner");
-		String birthDate = reader.nextLine();
+		System.out.println("Year");
+		String year = reader.nextLine();
+		System.out.println("Month (If the month is less than 10, please add a 0 in the front)");
+		String month = reader.nextLine();
+		System.out.println("Day (If the day is less than 10, please add a 0 in the front)");
+		String day = reader.nextLine();
+		String birthDate = year+"/"+month+"/"+day;
 		System.out.println("Pets type of the owner");
 		String petsType = reader.nextLine();
 		Owner e = new Owner(id, names, lastNames, birthDate, petsType);		
@@ -549,6 +569,25 @@ public class Main {
 		} catch (NoExist e1) {
 			System.out.println(e1.getMessage());
 		}
+	}
+	
+	public void addClub() throws ClassNotFoundException, IOException {
+		System.out.println("Id of the club");
+		String id = reader.nextLine();
+		System.out.println("Names of the club");
+		String name = reader.nextLine();
+		System.out.println("Creation date of the club");
+		System.out.println("Year");
+		String year = reader.nextLine();
+		System.out.println("Month (If the month is less than 10, please add a 0 in the front)");
+		String month = reader.nextLine();
+		System.out.println("Day (If the day is less than 10, please add a 0 in the front)");
+		String day = reader.nextLine();
+		String creationDate = year+"/"+month+"/"+day;
+		System.out.println("Pets type of the club");
+		String petsType = reader.nextLine();
+		Club e = new Club(id, name, creationDate, petsType);
+		information.addClub(e);
 	}
 	
 	public void eliminate() {

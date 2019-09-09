@@ -12,7 +12,6 @@ public class Program {
 	public Program() throws ClassNotFoundException, IOException {
 		clubs = new ArrayList<Club>();
 		loadData();
-		System.out.println(clubs.size());
 	}
 
 	public ArrayList<Club> getClubs() {
@@ -23,12 +22,13 @@ public class Program {
 		this.clubs = clubs;
 	}
 	
-	public void addClub(Club e) throws FileNotFoundException {
+	public void addClub(Club e) throws IOException {
 		clubs.add(e);
 		File f = new File(ARCHIVE_PLANE);
-		PrintWriter p = new PrintWriter(f);
-		p.println(e);
-		p.close();
+		FileWriter fw = new FileWriter(f.getAbsoluteFile(), true);
+		BufferedWriter bw = new BufferedWriter(fw);
+		bw.write(e.toString()+"\n");
+		bw.close();
 	}
 	
 	public void addOwner(Owner e, String idClub) throws SameId, IOException, NoExist{
@@ -579,9 +579,13 @@ public class Program {
 		String line;
 		while((line= br.readLine())!=null) {
         	if(!line.equals("id,name,creationdate,mascotsType")) {
-        		String[] s = line.split(",");
-            	Club e = new Club(s[0], s[1], s[2], s[3]);
-            	clubs.add(e);
+        		try {
+        			String[] s = line.split(",");
+                	Club e = new Club(s[0], s[1], s[2], s[3]);
+                	clubs.add(e);
+        		}catch(Exception e) {
+        			
+        		}
             }
         }
         br.close();

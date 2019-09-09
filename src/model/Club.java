@@ -483,6 +483,7 @@ public class Club implements Comparable<Club>, Comparator<Club>{
 			if(owners.get(i).getId().equals(idOwner)) {
 				finded = true;
 				owners.get(i).addPets(e);
+				saveData();
 			}
 		}
 	}
@@ -516,10 +517,7 @@ public class Club implements Comparable<Club>, Comparator<Club>{
 		File f = new File(id);
 		try {
 			ObjectInputStream o = new ObjectInputStream(new FileInputStream(f));
-			Owner e;
-			while((e=(Owner) o.readObject()) != null){
-				owners.add(e);
-			}
+			owners = (ArrayList<Owner>)o.readObject();
 			o.close();
 		}catch(Exception e) {
 		
