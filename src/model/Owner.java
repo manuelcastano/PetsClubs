@@ -99,7 +99,7 @@ public class Owner implements Serializable, Comparable<Owner>, Comparator<Owner>
 	public void addPets(Pet e) throws PetName{
 		boolean equal = false;
 		for (int i = 0; i < pets.size() && !equal; i++) {
-			if(pets.get(i).compareTo(e) == 0) {
+			if(pets.get(i).getName().equals(e.getName())) {
 				equal = true;
 			}
 		}
@@ -343,12 +343,26 @@ public class Owner implements Serializable, Comparable<Owner>, Comparator<Owner>
 	
 	public boolean eliminatePet(String msg) {
 		boolean eliminated = false;
-		for (int i = 0; i < pets.size() && !eliminated; i++) {
+		for (int i = 0; i < pets.size(); i++) {
 			if(pets.get(i).getName().equals(msg) || pets.get(i).getId().equals(msg)) {
 				eliminated = true;
 				pets.remove(i);
 			}
 		}
 		return eliminated;
+	}
+
+	@Override
+	public String toString() {
+		return "id=" + id + ", names=" + names + ", lastNames=" + lastNames + ", birthDate=" + birthDate
+				+ ", petsType=" + petsType+"\n";
+	}
+	
+	public String thePets() {
+		String msg = "";
+		for(int i = 0; i < pets.size(); i++) {
+			msg += pets.get(i);
+		}
+		return msg;
 	}
 }

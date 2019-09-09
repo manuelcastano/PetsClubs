@@ -86,19 +86,22 @@ public class Club implements Comparable<Club>, Comparator<Club>{
 		return petsType.compareTo(e.getPetsType());
 	}
 	
-
-	public boolean sameOwner(Owner e){
-		boolean equal = false;
-		for (int i = 0; i < owners.size() && !equal; i++) {
-			if(owners.get(i).compareTo(e)==0) {
-				equal = true;
-			}
-		}
-		return equal;
+	
+	public void addOwner(Owner e) throws IOException {
+		owners.add(e);
+		saveData();
 	}
 	
-	public void addOwner(Owner e) {
-		owners.add(e);
+	public void saveData() throws IOException {
+		File f = new File(id);
+		BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+		bw.write("");
+		bw.close();
+		ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(f));
+		for(int i = 0; i < owners.size(); i++) {
+			o.writeObject(owners.get(i));
+		}
+		o.close();
 	}
 	
 	//By insertion
@@ -474,10 +477,10 @@ public class Club implements Comparable<Club>, Comparator<Club>{
 		return finded;
 	}
 	
-	public void addPet(Pet e, String idOwner) throws PetName {
+	public void addPet(Pet e, String idOwner) throws PetName, IOException {
 		boolean finded = false;
 		for(int i = 0; i < owners.size() && !finded; i++) {
-			if(owners.get(i).getId().equals(id)) {
+			if(owners.get(i).getId().equals(idOwner)) {
 				finded = true;
 				owners.get(i).addPets(e);
 			}
@@ -486,18 +489,19 @@ public class Club implements Comparable<Club>, Comparator<Club>{
 	
 	public boolean eliminatePet(String msg) {
 		boolean finded = false;
-		for(int i = 0; i < owners.size() && !finded; i++) {
+		for(int i = 0; i < owners.size(); i++) {
 			finded = owners.get(i).eliminatePet(msg);
 		}
 		return finded;
 	}
 	
-	public boolean eliminateOwner(String msg) {
+	public boolean eliminateOwner(String msg) throws IOException {
 		boolean eliminated = false;
-		for (int i = 0; i < owners.size() && !eliminated; i++) {
+		for (int i = 0; i < owners.size(); i++) {
 			if(owners.get(i).getNames().equals(msg) || owners.get(i).getId().equals(msg)) {
 				eliminated = true;
 				owners.remove(i);
+				saveData();
 			}
 		}
 		return eliminated;
@@ -508,22 +512,63 @@ public class Club implements Comparable<Club>, Comparator<Club>{
 		return id+","+name+","+creationDate+","+petsType;
 	}
 	
-	public void saveData() throws FileNotFoundException, IOException {
+	public void loadData() {
 		File f = new File(id);
-		BufferedWriter bw = new BufferedWriter(new FileWriter(f));
-		bw.write("");
-		bw.close();
-		ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(f));
-		for(int i = 0; i < owners.size(); i++) {
-			o.writeObject(owners.get(i));
+		try {
+			ObjectInputStream o = new ObjectInputStream(new FileInputStream(f));
+			Owner e;
+			while((e=(Owner) o.readObject()) != null){
+				owners.add(e);
+			}
+			o.close();
+		}catch(Exception e) {
+		
 		}
-		o.close();
 	}
 	
-	public void loadData() throws FileNotFoundException, IOException, ClassNotFoundException {
-		File f = new File(id);
-		ObjectInputStream o = new ObjectInputStream(new FileInputStream(f));
-		owners = (ArrayList<Owner>)o.readObject();
-		o.close();
+	public String thePets() {
+		String msg = "";
+		for(int i = 0; i < owners.size(); i++) {
+			msg += owners.get(i).thePets();
+		}
+		return msg;
+	}
+	
+	public String theOwners() {
+		String msg = "";
+		for(int i = 0; i < owners.size(); i++) {
+			msg += owners.get(i);
+		}
+		return msg;
+	}
+	
+	public void orderPetsById() {
+		for(int i = 0; i < owners.size(); i++) {
+			owners.get(i).orderPetsById();
+		}
+	}
+	
+	public void orderPetsByName() {
+		for(int i = 0; i < owners.size(); i++) {
+			owners.get(i).orderPetsByName();
+		}
+	}
+	
+	public void orderPetsByBirthDate() {
+		for(int i = 0; i < owners.size(); i++) {
+			owners.get(i).orderPetsByBirthDate();
+		}
+	}
+	
+	public void orderPetsByGender() {
+		for(int i = 0; i < owners.size(); i++) {
+			owners.get(i).orderPetsByGender();
+		}
+	}
+	
+	public void orderPetsByType() {
+		for(int i = 0; i < owners.size(); i++) {
+			owners.get(i).orderPetsByType();
+		}
 	}
 }

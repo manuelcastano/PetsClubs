@@ -21,6 +21,11 @@ public class Pet implements Comparable<Pet>, Comparator<Pet>{
 		this.type = type;
 	}
 
+	@Override
+	public String toString() {
+		return "id=" + id + ", name=" + name + ", birthDate=" + birthDate + ", gender=" + gender + ", type=" + type+"\n";
+	}
+
 	public String getId() {
 		return id;
 	}

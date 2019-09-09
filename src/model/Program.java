@@ -5,12 +5,14 @@ import java.util.ArrayList;
 
 public class Program {
 	
-	public static final String ARCHIVE_PLANE = "\"C:\\Users\\mafes\\Documents\\LaboratoriosAPO\\PetsClubs\\Clubs.csv\"";
+	public static final String ARCHIVE_PLANE = "Clubs.csv";
 	
 	private ArrayList<Club> clubs;
 
-	public Program() {
+	public Program() throws ClassNotFoundException, IOException {
 		clubs = new ArrayList<Club>();
+		loadData();
+		System.out.println(clubs.size());
 	}
 
 	public ArrayList<Club> getClubs() {
@@ -29,10 +31,10 @@ public class Program {
 		p.close();
 	}
 	
-	public void addOwner(Owner e, String idClub) throws SameId{
+	public void addOwner(Owner e, String idClub) throws SameId, IOException, NoExist{
 		boolean equal = false;
 		for(int i = 0; i < clubs.size() && !equal; i++) {
-			if(clubs.get(i).sameOwner(e)) {
+			if(clubs.get(i).ownerExist(e.getId())) {
 				equal = true;
 			}
 		}
@@ -43,6 +45,9 @@ public class Program {
 					finded = true;
 					clubs.get(i).addOwner(e);
 				}
+			}
+			if(!finded) {
+				throw new NoExist();
 			}
 		}
 		else {
@@ -507,7 +512,7 @@ public class Program {
 		return msg;
 	}
 	
-	public String addPet(String idOwner, Pet e) throws PetName {
+	public String addPet(String idOwner, Pet e) throws PetName, IOException {
 		boolean finded = false;
 		String msg = "The owner doesn't exist";
 		for(int i = 0; i < clubs.size() && !finded; i++) {
@@ -522,7 +527,7 @@ public class Program {
 	
 	public void eliminatePet(String msg) throws NoExist{
 		boolean finded = false;
-		for(int i = 0; i < clubs.size() && !finded; i++) {
+		for(int i = 0; i < clubs.size(); i++) {
 			finded = clubs.get(i).eliminatePet(msg);
 		}
 		if(!finded) {
@@ -530,9 +535,9 @@ public class Program {
 		}
 	}
 	
-	public void eliminateOwner(String msg) throws NoExist{
+	public void eliminateOwner(String msg) throws NoExist, IOException{
 		boolean finded = false;
-		for(int i = 0; i < clubs.size() && !finded; i++) {
+		for(int i = 0; i < clubs.size(); i++) {
 			finded = clubs.get(i).eliminateOwner(msg);
 		}
 		if(!finded) {
@@ -540,35 +545,135 @@ public class Program {
 		}
 	}
 	
-	public void eliminateClub(String msg) throws NoExist{
+	public void eliminateClub(String msg) throws NoExist, ClassNotFoundException, IOException{
 		boolean eliminated = false;
-		for (int i = 0; i < clubs.size() && !eliminated; i++) {
+		for (int i = 0; i < clubs.size(); i++) {
 			if(clubs.get(i).getName().equals(msg) || clubs.get(i).getId().equals(msg)) {
 				eliminated = true;
-				clubs.remove(i);
-			}
+				System.out.println(new File(clubs.get(i).getId()).delete());
+				File f = new File(ARCHIVE_PLANE);
+				File tempFile = new File(f.getAbsolutePath()+".csv");
+				BufferedReader br = new BufferedReader(new FileReader(f));
+		        PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+		        String line = null;
+		        while ((line = br.readLine()) != null) {
+		            if (!line.trim().equals(clubs.get(i).toString())) {
+		                pw.println(line);
+		                pw.flush();
+		            }
+		        }
+		        pw.close();
+		        br.close();
+		        f.delete();
+		        tempFile.renameTo(f);
+		     }
 		}
 		if(!eliminated) {
 			throw new NoExist();
 		}
 	}
 	
-	public void saveData() throws FileNotFoundException, IOException {
-		for(int i = 0; i < clubs.size(); i++) {
-			clubs.get(i).saveData();
-		}
-	}
-	
 	public void loadData() throws IOException, ClassNotFoundException {
 		File f = new File(ARCHIVE_PLANE);
-		BufferedReader bw = new BufferedReader(new FileReader(f));
+		BufferedReader br = new BufferedReader(new FileReader(f));
 		String line;
-        while((line= bw.readLine())!=null) {
-        	if(!line.equals("id,name,CreationDate,petsType")) {
+		while((line= br.readLine())!=null) {
+        	if(!line.equals("id,name,creationdate,mascotsType")) {
         		String[] s = line.split(",");
             	Club e = new Club(s[0], s[1], s[2], s[3]);
             	clubs.add(e);
-        	}
+            }
         }
+        br.close();
+	}
+	
+	public String thePets() {
+		String msg = "";
+		for(int i = 0; i < clubs.size(); i++) {
+			msg += clubs.get(i).thePets();
+		}
+		return msg;
+	}
+	
+	public String theOwners() {
+		String msg = "";
+		for(int i = 0; i < clubs.size(); i++) {
+			msg += clubs.get(i).theOwners();
+		}
+		return msg;
+	}
+	
+	public String theClubs() {
+		String msg = "";
+		for(int i = 0; i < clubs.size(); i++) {
+			msg += clubs.get(i);
+		}
+		return msg;
+	}
+	
+	public void orderPetsById() {
+		for(int i = 0; i < clubs.size(); i++) {
+			clubs.get(i).orderPetsById();
+		}
+	}
+	
+	public void orderPetsByName() {
+		for(int i = 0; i < clubs.size(); i++) {
+			clubs.get(i).orderPetsByName();
+		}
+	}
+	
+	public void orderPetsByBirthDate() {
+		for(int i = 0; i < clubs.size(); i++) {
+			clubs.get(i).orderPetsByBirthDate();
+		}
+	}
+	
+	public void orderPetsByGender() {
+		for(int i = 0; i < clubs.size(); i++) {
+			clubs.get(i).orderPetsByGender();
+		}
+	}
+	
+	public void orderPetsByType() {
+		for(int i = 0; i < clubs.size(); i++) {
+			clubs.get(i).orderPetsByType();
+		}
+	}
+	
+	public void orderOwnersById() {
+		for(int i = 0; i < clubs.size(); i++) {
+			clubs.get(i).orderOwnersById();
+		}
+	}
+	
+	public void orderOwnersByNames() {
+		for(int i = 0; i < clubs.size(); i++) {
+			clubs.get(i).orderOwnersByNames();
+		}
+	}
+	
+	public void orderOwnersByLastNames() {
+		for(int i = 0; i < clubs.size(); i++) {
+			clubs.get(i).orderOwnersByLastNames();
+		}
+	}
+	
+	public void orderOwnersByBirthDate() {
+		for(int i = 0; i < clubs.size(); i++) {
+			clubs.get(i).orderOwnersByBirthDate();
+		}
+	}
+	
+	public void orderOwnersByPetsType() {
+		for(int i = 0; i < clubs.size(); i++) {
+			clubs.get(i).orderOwnersByPetsType();
+		}
+	}
+	
+	public void orderOwnersByPetsNumber() {
+		for(int i = 0; i < clubs.size(); i++) {
+			clubs.get(i).orderOwnersByPetsNumber();
+		}
 	}
 }
