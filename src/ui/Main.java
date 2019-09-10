@@ -8,7 +8,7 @@ public class Main {
 	private Program information;
 	private Scanner reader;
 	
-	public Main() throws ClassNotFoundException, IOException {
+	public Main() throws ClassNotFoundException, IOException, NumberFormatException, PetName {
 		System.out.println("Loading data... please wait a minute");
 		information = new Program();
 		reader = new Scanner(System.in);
@@ -47,7 +47,15 @@ public class Main {
 					break;
 				case 5:
 					try {
-						addClub();
+						try {
+							addClub();
+						} catch (NumberFormatException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (PetName e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					} catch (ClassNotFoundException | IOException e) {
 						System.out.println(e.getMessage());
 					}
@@ -569,7 +577,7 @@ public class Main {
 		}
 	}
 	
-	public void addClub() throws ClassNotFoundException, IOException {
+	public void addClub() throws ClassNotFoundException, IOException, NumberFormatException, PetName {
 		System.out.println("Id of the club");
 		String id = reader.nextLine();
 		System.out.println("Names of the club");

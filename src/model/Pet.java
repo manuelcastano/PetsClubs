@@ -2,7 +2,7 @@ package model;
 import java.io.Serializable;
 import java.util.Comparator;
 
-public class Pet implements Comparable<Pet>, Comparator<Pet>{
+public class Pet implements Serializable, Comparable<Pet>, Comparator<Pet>{
 	
 	public static final int MALE = 1;
 	public static final int FEMALE = 2;

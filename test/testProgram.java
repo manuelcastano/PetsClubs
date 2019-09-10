@@ -24,7 +24,12 @@ public class testProgram {
 	
 	private void setupStage() {
 		try {
-			theProgram = new Program();
+			try {
+				theProgram = new Program();
+			} catch (NumberFormatException | PetName e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} catch (ClassNotFoundException e) {
 			fail();
 		} catch (IOException e) {
@@ -36,7 +41,16 @@ public class testProgram {
 	public void testAddClub() {
 		try {
 			setupStage();
-			Club e = new Club("0000000001", "Icesi", "2019/03/18", "Dogs");
+			Club e;
+			try {
+				e = new Club("0000000001", "Icesi", "2019/03/18", "Dogs");
+			} catch (NumberFormatException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (PetName e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			theProgram.addClub(e);
 			File f = new File(Program.ARCHIVE_PLANE);
 			BufferedReader br = new BufferedReader(new FileReader(f));

@@ -12,7 +12,7 @@ public class Club implements Comparable<Club>, Comparator<Club>{
 	private String petsType;
 	private ArrayList<Owner> owners;
 	
-	public Club(String id, String name, String creationDate, String petsType) throws IOException, ClassNotFoundException {
+	public Club(String id, String name, String creationDate, String petsType) throws IOException, ClassNotFoundException, NumberFormatException, PetName {
 		this.id = id;
 		this.name = name;
 		this.creationDate = creationDate;
@@ -88,15 +88,21 @@ public class Club implements Comparable<Club>, Comparator<Club>{
 	
 	
 	public void addOwner(Owner e) throws IOException {
-		owners.add(e);
-		saveData();
+		try {
+			owners.add(e);
+			File f = new File(id);
+			ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(f));
+			o.writeObject(e);
+			o.close();
+			System.out.println(e.getNames());
+		}catch(Exception e1) {
+			System.out.println(e1.getMessage()+"hola");
+		}
+		
 	}
 	
 	public void saveData() throws IOException {
 		File f = new File(id);
-		BufferedWriter bw = new BufferedWriter(new FileWriter(f));
-		bw.write("");
-		bw.close();
 		ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(f));
 		for(int i = 0; i < owners.size(); i++) {
 			o.writeObject(owners.get(i));
@@ -513,15 +519,23 @@ public class Club implements Comparable<Club>, Comparator<Club>{
 		return id+","+name+","+creationDate+","+petsType;
 	}
 	
-	public void loadData() {
-		File f = new File(id);
-		try {
-			ObjectInputStream o = new ObjectInputStream(new FileInputStream(f));
-			owners = (ArrayList<Owner>)o.readObject();
-			o.close();
-		}catch(Exception e) {
+	public void loadData() throws NumberFormatException, IOException, PetName {
+		File f = new File(id+".csv");
+		BufferedReader br = new BufferedReader(new FileReader(f));
+		String line;
+		while((line= br.readLine())!=null) {
+			
+			if(!line.equals("ID,nameOwner,lastNames,birthDate,petsType,idPet,namePet,birthDatePet,Gender,type")) {
+				String[] s = line.split(",");
+	        	Owner e = new Owner(s[0], s[1], s[2], s[3], s[4]);
+	        	Pet e1 = new Pet(s[5], s[6], s[7], Integer.parseInt(s[8]), s[9]);
+	        	e.addPets(e1);
+	        	addOwner(e);
+	        	
+			}
+        }
 		
-		}
+        br.close();
 	}
 	
 	public String thePets() {

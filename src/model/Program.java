@@ -9,7 +9,7 @@ public class Program {
 	
 	private ArrayList<Club> clubs;
 
-	public Program() throws ClassNotFoundException, IOException {
+	public Program() throws ClassNotFoundException, IOException, NumberFormatException, PetName {
 		clubs = new ArrayList<Club>();
 		loadData();
 	}
@@ -573,20 +573,14 @@ public class Program {
 		}
 	}
 	
-	public void loadData() throws IOException, ClassNotFoundException {
+	public void loadData() throws IOException, ClassNotFoundException, NumberFormatException, PetName {
 		File f = new File(ARCHIVE_PLANE);
 		BufferedReader br = new BufferedReader(new FileReader(f));
 		String line;
 		while((line= br.readLine())!=null) {
-        	if(!line.equals("id,name,creationdate,mascotsType")) {
-        		try {
-        			String[] s = line.split(",");
-                	Club e = new Club(s[0], s[1], s[2], s[3]);
-                	clubs.add(e);
-        		}catch(Exception e) {
-        			
-        		}
-            }
+			String[] s = line.split(",");
+        	Club e = new Club(s[0], s[1], s[2], s[3]);
+        	addClub(e);
         }
         br.close();
 	}
