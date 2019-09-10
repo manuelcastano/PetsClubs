@@ -535,7 +535,7 @@ public class Club implements Comparable<Club>, Comparator<Club>{
 	public String theOwners() {
 		String msg = "";
 		for(int i = 0; i < owners.size(); i++) {
-			msg += owners.get(i);
+			msg += owners.get(i)+"\n";
 		}
 		return msg;
 	}

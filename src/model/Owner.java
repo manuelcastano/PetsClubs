@@ -361,7 +361,7 @@ public class Owner implements Serializable, Comparable<Owner>, Comparator<Owner>
 	public String thePets() {
 		String msg = "";
 		for(int i = 0; i < pets.size(); i++) {
-			msg += pets.get(i);
+			msg += pets.get(i)+"\n";
 		}
 		return msg;
 	}

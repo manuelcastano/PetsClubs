@@ -76,8 +76,6 @@ public class Main {
 			option = reader.nextInt();
 			reader.nextLine();
 			switch(option) {
-			case 0:
-				break;
 			case 1:
 				System.out.println("How do you want to ordered?");
 				System.out.println("1. Id");

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Program {
 	
-	public static final String ARCHIVE_PLANE = "Clubs.csv";
+	public static final String ARCHIVE_PLANE = "Clubs.txt";
 	
 	private ArrayList<Club> clubs;
 
@@ -550,7 +550,7 @@ public class Program {
 		for (int i = 0; i < clubs.size(); i++) {
 			if(clubs.get(i).getName().equals(msg) || clubs.get(i).getId().equals(msg)) {
 				eliminated = true;
-				System.out.println(new File(clubs.get(i).getId()).delete());
+				new File(clubs.get(i).getId()).delete();
 				File f = new File(ARCHIVE_PLANE);
 				File tempFile = new File(f.getAbsolutePath()+".csv");
 				BufferedReader br = new BufferedReader(new FileReader(f));
@@ -610,7 +610,7 @@ public class Program {
 	public String theClubs() {
 		String msg = "";
 		for(int i = 0; i < clubs.size(); i++) {
-			msg += clubs.get(i);
+			msg += clubs.get(i)+"\n";
 		}
 		return msg;
 	}
