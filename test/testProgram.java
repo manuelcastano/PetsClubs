@@ -24,15 +24,8 @@ public class testProgram {
 	
 	private void setupStage() {
 		try {
-			try {
-				theProgram = new Program();
-			} catch (NumberFormatException | PetName e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} catch (ClassNotFoundException e) {
-			fail();
-		} catch (IOException e) {
+			theProgram = new Program();
+		} catch (NumberFormatException | ClassNotFoundException | IOException e) {
 			fail();
 		}
 	}
@@ -41,17 +34,13 @@ public class testProgram {
 	public void testAddClub() {
 		try {
 			setupStage();
-			Club e;
+			Club e = null;
 			try {
-				e = new Club("0000000001", "Icesi", "2019/03/18", "Dogs");
-			} catch (NumberFormatException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (PetName e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			    e = new Club("1059463589", "Icesi", "2019/03/18", "Dogs");
+				theProgram.addClub(e);
+			}catch(Exception e1) {
+				fail();
 			}
-			theProgram.addClub(e);
 			File f = new File(Program.ARCHIVE_PLANE);
 			BufferedReader br = new BufferedReader(new FileReader(f));
 			String line;
@@ -65,8 +54,6 @@ public class testProgram {
 	        if(!finded) {
 	        	fail();
 	        }
-		} catch (ClassNotFoundException e) {
-			fail();
 		} catch (IOException e) {
 			fail();
 		}
@@ -77,7 +64,7 @@ public class testProgram {
 		setupStage();
 		Owner e = new Owner("1005966201", "Manuel David", "Castaño", "2001/12/14", "Dogs");
 		try {
-			theProgram.addOwner(e, "0000000001");
+			theProgram.addOwner(e, "1059463589");
 			File f = new File("0000000001");
 			try {
 				ObjectInputStream o = new ObjectInputStream(new FileInputStream(f));
@@ -89,7 +76,6 @@ public class testProgram {
 				fail();
 			}
 		} catch (SameId e1) {
-			fail();
 		} catch (IOException e1) {
 			fail();
 		} catch (NoExist e1) {
@@ -112,14 +98,8 @@ public class testProgram {
 	public void testFindBinaryClubById() {
 		setupStage();
 		theProgram.orderClubsById();
-		long t1 = System.currentTimeMillis();
-		if(theProgram.findBinaryClubById("0001814192").equals("The club doesn't exist")) {
-			long t2 = System.currentTimeMillis();
-			System.out.println(t2-t1);
+		if(theProgram.findBinaryClubById("1059463589").equals("The club doesn't exist")) {
 			fail();
-		}else {
-			long t2 = System.currentTimeMillis();
-			System.out.println(t2-t1);
 		}
 	}
 	
@@ -127,12 +107,88 @@ public class testProgram {
 	public void testAddPet() {
 		setupStage();
 		Pet e = new Pet("58", "Manchas", "2018/2/18", 1, "Pastor");
+		Owner a = new Owner("1005966201", "Hi", "lo", "2018/02/09", "Dogs");
 		try {
+			theProgram.addOwner(a, "1059463589");
 			theProgram.addPet("1005966201", e);
+			theProgram.orderPetsById();
+			assertTrue(theProgram.findBinaryPetById("58").equals("The pet exist"));
 		} catch (PetName e1) {
-			fail();
+			
 		} catch (IOException e1) {
 			fail();
+		} catch (SameId e1) {
+			
+		} catch (NoExist e1) {
+			
+		}
+	}
+	
+	@Test
+	public void testEliminatePet() {
+		setupStage();
+		Pet e = new Pet("58", "Manchas", "2018/2/18", 1, "Pastor");
+		Owner a = new Owner("1005966201", "Hi", "lo", "2018/02/09", "Dogs");
+		try {
+			theProgram.addOwner(a, "1059463589");
+			theProgram.addPet("1005966201", e);
+			theProgram.eliminatePet("58");
+			theProgram.orderPetsById();
+			assertTrue(theProgram.findBinaryPetById("58").equals("The pet doesn't exist"));
+		} catch (PetName e1) {
+			
+		} catch (IOException e1) {
+			fail();
+		} catch (SameId e1) {
+			
+		} catch (NoExist e1) {
+			
+		}
+	}
+	
+	@Test
+	public void testEliminateOwner() {
+		setupStage();
+		Owner a = new Owner("10051966201", "Hi", "lo", "2018/02/09", "Dogs");
+		try {
+			theProgram.addOwner(a, "1059463589");
+			theProgram.eliminateOwner("10051966201");
+			assertTrue(theProgram.findSequentialOwnerById("10051966201").equals("The owner doesn't exist"));
+		} catch (IOException e1) {
+			fail();
+		} catch (SameId e1) {
+			
+		} catch (NoExist e1) {
+			fail();
+		}
+	}
+	
+	@Test
+	public void testEliminateClub() {
+		setupStage();
+		try {
+			Club a = new Club("00000000001", "Hi", "2018/02/09", "lo");
+			theProgram.addClub(a);
+			theProgram.eliminateClub("00000000001");
+			theProgram.orderClubsById();
+			assertTrue(theProgram.findBinaryClubById("00000000001").equals("The club doesn't exist"));
+		} catch (NumberFormatException e2) {
+			fail();
+		} catch (ClassNotFoundException e2) {
+			fail();
+		} catch (IOException e2) {
+			fail();
+		} catch(NoExist e) {
+			fail();
+		}
+	}
+	
+	@Test
+	public void testLoadData() {
+		setupStage();
+		assertTrue(theProgram.getClubs().size() >= 5);
+		for (int i = 0; i < theProgram.getClubs().size(); i++) {
+			assertTrue(theProgram.getClubs().get(i).getOwners().size() > 0);
 		}
 	}
 }

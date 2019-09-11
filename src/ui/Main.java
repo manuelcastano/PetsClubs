@@ -438,7 +438,7 @@ public class Main {
 					break;
 				case 2:
 					System.out.println("Ordering the pets by name...");
-					information.orderPetsById();
+					information.orderPetsByName();
 					System.out.println("Name of the pet: ");
 					String name = reader.nextLine();
 					t1 = System.currentTimeMillis();
@@ -481,7 +481,7 @@ public class Main {
 					break;
 				case 5:
 					System.out.println("Ordering the pets by type...");
-					information.orderPetsByBirthDate();
+					information.orderPetsByType();
 					System.out.println("Birth date of the pet: ");
 					String type = reader.nextLine();
 					t1 = System.currentTimeMillis();
@@ -630,7 +630,7 @@ public class Main {
 				msg = reader.nextLine();
 				try {
 					information.eliminatePet(msg);
-				} catch (NoExist e) {
+				} catch (NoExist | IOException e) {
 					System.out.println(e.getMessage());
 				}
 				break;

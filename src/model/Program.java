@@ -9,7 +9,7 @@ public class Program {
 	
 	private ArrayList<Club> clubs;
 
-	public Program() throws ClassNotFoundException, IOException, NumberFormatException, PetName {
+	public Program() throws ClassNotFoundException, IOException, NumberFormatException{
 		clubs = new ArrayList<Club>();
 		loadData();
 	}
@@ -525,7 +525,7 @@ public class Program {
 		return msg;
 	}
 	
-	public void eliminatePet(String msg) throws NoExist{
+	public void eliminatePet(String msg) throws NoExist, IOException{
 		boolean finded = false;
 		for(int i = 0; i < clubs.size(); i++) {
 			finded = clubs.get(i).eliminatePet(msg);
@@ -538,7 +538,9 @@ public class Program {
 	public void eliminateOwner(String msg) throws NoExist, IOException{
 		boolean finded = false;
 		for(int i = 0; i < clubs.size(); i++) {
-			finded = clubs.get(i).eliminateOwner(msg);
+			if(clubs.get(i).eliminateOwner(msg)) {
+				finded = true;
+			}
 		}
 		if(!finded) {
 			throw new NoExist();
@@ -566,6 +568,7 @@ public class Program {
 		        br.close();
 		        f.delete();
 		        tempFile.renameTo(f);
+		        clubs.remove(i);
 		     }
 		}
 		if(!eliminated) {
@@ -573,16 +576,31 @@ public class Program {
 		}
 	}
 	
-	public void loadData() throws IOException, ClassNotFoundException, NumberFormatException, PetName {
+	public void loadData() throws NumberFormatException, ClassNotFoundException{
 		File f = new File(ARCHIVE_PLANE);
-		BufferedReader br = new BufferedReader(new FileReader(f));
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(f));
+		} catch (FileNotFoundException e2) {
+		}
 		String line;
-		while((line= br.readLine())!=null) {
-			String[] s = line.split(",");
-        	Club e = new Club(s[0], s[1], s[2], s[3]);
-        	addClub(e);
-        }
-        br.close();
+		Club e = null;
+		try {
+			while((line= br.readLine())!=null) {
+				String[] s = line.split(",");
+				try {
+					e = new Club(s[0], s[1], s[2], s[3]);
+			    	clubs.add(e);
+				} catch (IOException e1) {
+					clubs.add(e);
+				}
+			}
+		} catch (IOException e1) {
+		}
+        try {
+			br.close();
+		} catch (IOException e1) {
+		}
 	}
 	
 	public String thePets() {
