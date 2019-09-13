@@ -76,7 +76,7 @@ class testOwner {
 	}
 	
 	@Test
-	public void eliminatePet() {
+	public void testEliminatePet() {
 		setupStage();
 		Pet e = new Pet("73465465", "Perla", "2018/02/21", 2, "Dog");
 		Pet e2 = new Pet("7466445", "Perla", "2017/08/01", 1, "Fish");
